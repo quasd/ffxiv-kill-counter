@@ -1,11 +1,13 @@
 # ffxiv-kill-counter
 
-Enemy kill counter for FINAL FANTASY XIV Korean server
+Enemy kill counter for FINAL FANTASY XIV English server
+
+Based on https://github.com/ChalkPE/ffxiv-kill-counter
 
 ## Installation
 
 ```url
-https://chalkpe.github.io/ffxiv-kill-counter/
+<TODO>
 ```
 
 1. Open [Advanced Combat Tracker](https://advancedcombattracker.com)

@@ -2,8 +2,8 @@
   "name": "ffxiv-kill-counter",
   "version": "0.2.2",
   "private": true,
-  "repository": "https://github.com/ChalkPE/ffxiv-kill-counter",
-  "author": "ChalkPE",
+  "repository": "https://github.com/quasd/ffxiv-kill-counter",
+  "author": "quasd",
   "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",

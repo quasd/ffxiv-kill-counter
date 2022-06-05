@@ -30,7 +30,7 @@
     </table>
 
     <footer @click="openRepository">v{{ pkg.version }}</footer>
-    <div v-if="!me">플레이어 인식 불가!</div>
+    <div v-if="!me">NO PLAYER !</div>
   </div>
 </template>
 
@@ -41,6 +41,7 @@ export default {
   name: 'App',
   data: () => ({
     me: null,
+    party: [],
     pets: [],
     counter: {},
 
@@ -52,6 +53,7 @@ export default {
   created () {
     this.addOverlayListener('LogLine')
     this.addOverlayListener('ChangePrimaryPlayer')
+    this.addOverlayListener('PartyChanged')
     window.startOverlayEvents()
   },
 
@@ -70,7 +72,9 @@ export default {
     onChangePrimaryPlayer ({ charID, charName }) {
       this.me = { name: charName, id: parseInt(charID, 10) }
     },
-
+    onPartyChanged ({ party }) {
+      this.party = party
+    },
     onLogLine ({ line }) {
       switch (line[0]) {
         case '00': return this.onGameLogLine(line)
@@ -83,8 +87,15 @@ export default {
     onGameLogLine (line) {
       switch (line[2].toLowerCase()) {
         case '0b3a':
-          const m = /^(.+?)[이가] (.+?)[을를] 쓰러뜨렸습니다\.$/.exec(line[4])
-          return m !== null && m[1] === this.me.name && this.count(m[2])
+          const m = /^(.+?) (?:defeat|destroy) (?:the )?(.+?)\.$/.exec(line[4])
+          return m !== null && m[1] === 'You' && this.count(m[2])
+        case '133a':
+          const n = /^(.+?) (?:defeats|destroys) (?:the )?(.+?)\.$/.exec(line[4])
+          let playerInParty = false
+          for (let member of this.party) {
+            if (member.name === n[1]) playerInParty = true
+          }
+          return n !== null && playerInParty && this.count(n[2])
       }
     },
 
@@ -146,10 +157,10 @@ html, body {
 
   user-select: none;
   color: white;
-  font-size: 15px;
+  font-size: 18px;
   line-height: 1rem;
-  letter-spacing: -0.1rem;
-  font-family: 'Noto Sans KR', '맑은 고딕', sans-serif;
+  letter-spacing: 0rem;
+  font-family: 'Lato', 'Source Han Sans', 'Meiryo UI', '맑은 고딕', sans-serif;
   text-shadow: 0 0 0.1rem #0090ce, 0 0 0.1rem #0090ce, 0 0 0.1rem #0090ce, 0 0 0.1rem #0090ce;
 
   footer {

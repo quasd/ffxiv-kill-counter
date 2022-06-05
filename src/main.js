@@ -1,4 +1,4 @@
-import 'OverlayPlugin/docs/assets/shared/common'
+import 'OverlayPlugin/docs/assets/shared/common.js'
 
 import Vue from 'vue'
 import App from './App.vue'
